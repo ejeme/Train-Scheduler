@@ -30,7 +30,7 @@ $(document).ready(function () {
     var nextTrain;
 
     //Data reference
-    var trainnameData = '';
+    var trainNameData = '';
     var destData = '';
     var arrivaldata = '';
     var freqdata = '';
@@ -39,16 +39,16 @@ $(document).ready(function () {
     $('#submit').on('click', function (event) {
         event.preventDefault();
 
-        trainName = $('#trainName').val().trim
+        trainName = $('#trainName').val().trim();
         dest = $('#dest').val().trim();
-        firstTrainTime = $('#firstTrainTime').val().trim;
+        firstTrainTime = $('#firstTrainTime').val().trim();
         freq = $('#freq').val().trim();
 
         //Removed input info
         $('#trainName').val('');
         $('#dest').val('');
-        $('#firstTrainTime').val();
-        $('#freq').val();
+        $('#firstTrainTime').val('');
+        $('#freq').val('');
 
 
         //Conversion to HH:MM
@@ -57,8 +57,8 @@ $(document).ready(function () {
         var currentTime = moment();
         diffTime = moment().diff(moment(firstTimeConverted), "minutes");
 
- //Time apart(remainder)
- tRemainder = diffTime % freq;
+        //Time apart(remainder)
+        tRemainder = diffTime % freq;
 
         //Minute Until Train
         tMinutesTillTrain = freq - tRemainder;
@@ -76,21 +76,26 @@ $(document).ready(function () {
 
 
         });
+    });
 
-        database.ref('/trainSchedule').on('child_added', function (snap) {
-            trainNameData = snap.val().trainName;
-            destData = snap.val().destination;
-            arrivalData = snap.val().arrival;
-            freqData = snap.val().frequency;
-            minutesAwayData = snap.val().minutesAway;
-        })
+    database.ref('/trainSchedule').on('child_added', function (snap) {
+        trainNameData = snap.val().trainName;
+        destData = snap.val().destination;
+        freqData = snap.val().frequency;
+        arrivalData = snap.val().arrival;
+        minutesAwayData = snap.val().minutesAway;
+
         //Data array
+    
         var dataArray = [trainNameData, destData, freqData, arrivalData, minutesAwayData];
         var newTr = $('<tr>');
-        for (var i = 0; i < dataArray.lengtgh; i++) {
+        for (var i = 0; i < dataArray.length; i++) {
+            var newTd = $('<td>');
             newTd.text(dataArray[i]);
             newTd.appendTo(newTr);
         }
+        console.log (newTd);
+
         $('.table').append(newTr);
 
 
